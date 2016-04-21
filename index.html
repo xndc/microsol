@@ -1,0 +1,69 @@
+<!doctype html>
+<html><head>
+    <meta charset="utf-8">
+    <title>Solitaire</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        html, body {
+            margin:           0;
+            padding:          0;
+            background-color: white;
+            color:            #222;
+            font-family:      monospace;
+        }
+
+        canvas#canvas {
+            display:    block;
+            margin:     auto;
+            margin-top: 5%;
+            border:     1px solid black;
+        }
+        div.error-page {
+            max-width:  600px;
+            margin:     auto;
+            margin-top: 5%;
+        }
+
+        div.error-page h1 {
+            font-weight: normal;
+            font-size:   4em;
+        }
+
+        div.error-page h2 {
+            font-weight: normal;
+        }
+
+        div.buttons {
+            max-width:  585px;
+            margin:     auto;
+            margin-top: 1em;
+        }
+
+        div.buttons a {
+            color: inherit;
+            margin-right: 1em;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head><body>
+    <canvas id="canvas" width="585" height="367">
+        <div class="error-page hidden" id="error-page-no-canvas">
+            <h1>:(</h1>
+            <h2>Your browser doesn't seem to have canvas support.</h2>
+            <p>Sorry about that. If you're on a computer, you should probably upgrade to
+            <a href="https://google.com/chrome">Chrome</a> or
+            <a href="https://mozilla.org/firefox">Firefox</a>. Not allowed to install software?
+            Try a <a href="http://portableapps.com/apps/internet/">portable browser</a>.</p>
+        </div>
+    </canvas>
+    <div class="buttons">
+        <a href="javascript:Deal()">Deal</a>
+        <a href="javascript:NextCardback()">Switch Cardback</a>
+    </div>
+    <script src="src/loader.js"></script>
+</body></html>
