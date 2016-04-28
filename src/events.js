@@ -16,14 +16,16 @@ function OnMouseDown (event) {
 
     // Liaise with Satan -- sorry, the DOM -- to get the actual data we need from the event.
     var X, Y;
-    if (event.touches) {
-        X = event.touches[0].pageX;
-        Y = event.touches[0].pageY;
+    if (event.changedTouches) {
+        X = event.touches[0].clientX;
+        Y = event.touches[0].clientY;
     } else {
-        var boundingClientRect = Canvas.getBoundingClientRect();
-        X = event.clientX - boundingClientRect.left;
-        Y = event.clientY - boundingClientRect.top;
+        X = event.clientX;
+        Y = event.clientY;
     }
+    var boundingClientRect = Canvas.getBoundingClientRect();
+    X -= boundingClientRect.left;
+    Y -= boundingClientRect.top;
 
     // Set the last mouse positions.
     iMouseLastX = X;
@@ -212,14 +214,16 @@ function OnMouseMove (event) {
 
         // The Satan liaison boilerplate, again.
         var X, Y;
-        if (event.touches) {
-            X = event.touches[0].pageX;
-            Y = event.touches[0].pageY;
+        if (event.changedTouches) {
+            X = event.changedTouches[0].clientX;
+            Y = event.changedTouches[0].clientY;
         } else {
-            var boundingClientRect = Canvas.getBoundingClientRect();
-            X = event.clientX - boundingClientRect.left;
-            Y = event.clientY - boundingClientRect.top;
+            X = event.clientX;
+            Y = event.clientY;
         }
+        var boundingClientRect = Canvas.getBoundingClientRect();
+        X -= boundingClientRect.left;
+        Y -= boundingClientRect.top;
 
         // Compute the mouse position deltas.
         var dX = X - iMouseLastX;
@@ -242,14 +246,16 @@ function OnMouseUp (event) {
 
     // Would it have been such a bother to have .x and .y properties on the event?
     var X, Y;
-    if (event.touches) {
-        X = event.touches[0].pageX;
-        Y = event.touches[0].pageY;
+    if (event.changedTouches) {
+        X = event.changedTouches[0].clientX;
+        Y = event.changedTouches[0].clientY;
     } else {
-        var boundingClientRect = Canvas.getBoundingClientRect();
-        X = event.clientX - boundingClientRect.left;
-        Y = event.clientY - boundingClientRect.top;
+        X = event.clientX;
+        Y = event.clientY;
     }
+    var boundingClientRect = Canvas.getBoundingClientRect();
+    X -= boundingClientRect.left;
+    Y -= boundingClientRect.top;
 
     // Set the last mouse positions.
     iMouseLastX = X;
