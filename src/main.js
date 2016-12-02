@@ -298,16 +298,84 @@ function NextCardback() {
 // I actually have no idea how to implement this.
 // See view-source:http://mrdoob.com/lab/javascript/effects/solitaire/ for pointers maybe, though
 // it's not entirely accurate.
-var iWinFrameskip  = 2; // Frames to skip beween each position increment.
-var iWinFoundation = 0; // Foundation of the card currently being animated.
-var iWinCardIndex  = 0; // Index of the card within the foundation.
-var iWinPosX       = 0; // X position to draw the card at.
-var iWinPosY       = 0; // Y position to draw the card at.
-var iWinFrameskipC = 0; // Frameskip counter state variable.
+var iWinFrameskip         = 1;    // Frames to skip beween each position increment.
+var iWinFrameskipCounter  = 0;    // Frameskip counter.
+var iWinFoundation        = 3;    // Foundation of the card currently being animated.
+var iWinCardIndex         = 12;   // Index of the card within the foundation. Starts at the top.
+var iWinPosX              = 0;    // X position to draw the card at.
+var iWinPosY              = 0;    // Y position to draw the card at.
+var iWinInitialDeltaX     = -2;   // Initial per-animation-frame X delta for each new card.
+var iWinInitialDeltaY     = -10;  // Initial per-animation-frame Y delta for each new card.
+var iWinDeltaX            = 0;    // Current per-animation-frame X delta.
+var iWinDeltaY            = 0;    // Current per-animation-frame Y delta.
+// sol.exe probably uses a frame counter, but I should get the stopwatch out and confirm sometime.
+var iWinAnimFramesPerCard = 900;  // Number of animation frames to draw for each card.
+var iWinAnimFrameCounter  = 0;    // Frame counter for the current card's animation.
 function GameWinRedraw() {
-    if (iWinFrameskipC === 0) {
-        iWinFrameskipC = iWinFrameskip;
+    // Set the redraw required flag. We'll set it to false later in this function if the entire win
+    // animation is done.
+    bRedrawRequired = true;
+    
+    // Frame skipping:
+    if (iWinFrameskipCounter === 0) {
+        iWinFrameskipCounter = iWinFrameskip;
     } else {
-        iWinFrameskipC--;
+        iWinFrameskipCounter--;
+        return;
     }
+    
+    // Animation frame counting:
+    if (iWinAnimFrameCounter === 0) {
+        iWinAnimFrameCounter = iWinAnimFramesPerCard;
+        
+        // Select the next card to animate, or terminate the animation if we're done.
+        if (iWinFoundation === 3) {
+            iWinFoundation = 0;
+            if (iWinCardIndex === 0) {
+                // We've already animated every card on every foundation.
+                bRedrawRequired = false;
+                return;
+            } else {
+                iWinCardIndex--;
+                // Sanity check, sort of:
+                if (iWinCardIndex >= aFoundations[iWinFoundation].length) {
+                    iWinCardIndex = aFoundations[iWinFoundation].length - 1;
+                }
+            }
+        } else {
+            iWinFoundation++;
+        }
+        
+        // Set the initial X and Y positions for the new card. See GameRedraw() above for details.
+        iWinPosX = 257 + (iWinFoundation * 82);
+        iWinPosY = 6;
+        
+        // Set the initial motion deltas for the new card.
+        iWinDeltaX = iWinInitialDeltaX;
+        iWinDeltaY = iWinInitialDeltaY;
+    } else {
+        iWinAnimFrameCounter--;
+    }
+    
+    // Update the card's position.
+    iWinPosX += iWinDeltaX;
+    iWinPosY += iWinDeltaY;
+    
+    // Check to see if the card is out of bounds.
+    if (iWinPosX < -CARD_W) {
+        iWinAnimFrameCounter = 0;
+        return;
+    }
+    
+    // Update the motion deltas.
+    if (iWinPosY >= Canvas.height - CARD_H) {
+        iWinPosY = Canvas.height - CARD_H;
+        iWinDeltaY = -iWinDeltaY * 0.85;
+    }
+    iWinDeltaY += 0.98;
+    
+    // Draw the card.
+    var CardIndex = aFoundations[iWinFoundation][iWinCardIndex];
+    var CardImage = GetCardImage(CardIndex);
+    Context.drawImage(CardImage, iWinPosX, iWinPosY);
 }
