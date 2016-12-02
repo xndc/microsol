@@ -298,10 +298,10 @@ function NextCardback() {
 // I actually have no idea how to implement this.
 // See view-source:http://mrdoob.com/lab/javascript/effects/solitaire/ for pointers maybe, though
 // it's not entirely accurate.
-var iWinFrameskip         = 1;    // Frames to skip beween each position increment.
+var iWinFrameskip         = 0;    // Frames to skip beween each position increment.
 var iWinFrameskipCounter  = 0;    // Frameskip counter.
 var iWinFoundation        = 3;    // Foundation of the card currently being animated.
-var iWinCardIndex         = 12;   // Index of the card within the foundation. Starts at the top.
+var iWinCardIndex         = 13;   // Index of the card within the foundation. Starts at the top.
 var iWinPosX              = 0;    // X position to draw the card at.
 var iWinPosY              = 0;    // Y position to draw the card at.
 var iWinInitialDeltaX     = -2;   // Initial per-animation-frame X delta for each new card.
