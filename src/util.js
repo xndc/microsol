@@ -59,3 +59,18 @@ function UtilLocalStorageSetItem (key, value) {
         return window.localStorage.setItem(key, value);
     } catch (e) {}
 }
+
+// Wins the game.
+function UtilDebugWin() {
+    aStock           = [];
+    aWaste           = [];
+    aFoundations     = [[], [], [], []];
+    aTableauFaceDown = [[], [], [], [], [], [], []];
+    aTableauFaceUp   = [[], [], [], [], [], [], []];
+    for (var foundation = 0; foundation < 4; foundation++) {
+        for (var card = 1; card <= 13; card++) {
+            aFoundations[foundation].push(card + 13 * foundation); 
+        }
+    }
+    bRedrawRequired = true;
+}

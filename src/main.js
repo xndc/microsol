@@ -169,6 +169,7 @@ function GameRedraw() {
         }
         if (bGameWon) {
             console.log("main.js: you won the game!");
+            bRedrawRequired = true;
         }
     }
 
@@ -309,7 +310,7 @@ var iWinInitialDeltaY     = -10;  // Initial per-animation-frame Y delta for eac
 var iWinDeltaX            = 0;    // Current per-animation-frame X delta.
 var iWinDeltaY            = 0;    // Current per-animation-frame Y delta.
 // sol.exe probably uses a frame counter, but I should get the stopwatch out and confirm sometime.
-var iWinAnimFramesPerCard = 900;  // Number of animation frames to draw for each card.
+var iWinAnimFramesPerCard = 250;  // Number of animation frames to draw for each card.
 var iWinAnimFrameCounter  = 0;    // Frame counter for the current card's animation.
 function GameWinRedraw() {
     // Set the redraw required flag. We'll set it to false later in this function if the entire win
@@ -351,7 +352,11 @@ function GameWinRedraw() {
         iWinPosY = 6;
         
         // Set the initial motion deltas for the new card.
-        iWinDeltaX = iWinInitialDeltaX;
+        if (Math.random() >= 0.5) {
+            iWinDeltaX = iWinInitialDeltaX;
+        } else {
+            iWinDeltaX = -iWinInitialDeltaX;
+        }
         iWinDeltaY = iWinInitialDeltaY;
     } else {
         iWinAnimFrameCounter--;
@@ -362,7 +367,7 @@ function GameWinRedraw() {
     iWinPosY += iWinDeltaY;
     
     // Check to see if the card is out of bounds.
-    if (iWinPosX < -CARD_W) {
+    if (iWinPosX < -CARD_W || iWinPosX > Canvas.width) {
         iWinAnimFrameCounter = 0;
         return;
     }
