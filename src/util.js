@@ -42,3 +42,20 @@ function UtilCheckCollision (X, Y, bX, bY, bW, bH) {
     if (Y > bY + bH) return false;
     return true;
 }
+
+// Retrieves a string from LocalStorage. Like window.localStorage.getItem, but returns undefined if
+// LocalStorage is unavailable instead of throwing an exception.
+function UtilLocalStorageGetItem (key) {
+    try {
+        return window.localStorage.getItem(key);
+    } catch (e) {
+        return undefined
+    }
+}
+
+// Stores a string in LocalStorage. Like window.localStorage.setItem, but ignores exceptions.
+function UtilLocalStorageSetItem (key, value) {
+    try {
+        return window.localStorage.setItem(key, value);
+    } catch (e) {}
+}

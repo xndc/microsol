@@ -103,7 +103,7 @@ window.onload = function() {
     Canvas.addEventListener("touchend",   OnMouseUp);
 
     // Check to see if we have state saved in LocalStorage.
-    var savedStateJSON = window.localStorage.getItem("savedState");
+    var savedStateJSON = UtilLocalStorageGetItem("savedState");
     if (savedStateJSON) {
         // Grab all the state variables.
         // TODO: error checking, make sure none of these are undefined.
@@ -156,7 +156,7 @@ function GameRedraw() {
             "aTableauFaceUp":   aTableauFaceUp,
             "iCardbackNumber":  iCardbackNumber,
         };
-        window.localStorage.setItem("savedState", window.JSON.stringify(savedState));
+        UtilLocalStorageSetItem("savedState", window.JSON.stringify(savedState));
     }
 
     // Check to see if the game has been won.
@@ -376,6 +376,8 @@ function GameWinRedraw() {
     
     // Draw the card.
     var CardIndex = aFoundations[iWinFoundation][iWinCardIndex];
-    var CardImage = GetCardImage(CardIndex);
-    Context.drawImage(CardImage, iWinPosX, iWinPosY);
+    if (CardIndex !== undefined) {
+        var CardImage = GetCardImage(CardIndex);
+        Context.drawImage(CardImage, iWinPosX, iWinPosY);
+    }
 }
