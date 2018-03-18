@@ -1,3 +1,8 @@
+**WARNING**:  
+All images are presumably copyrighted by Microsoft.
+
+--
+
 The cardback images (located in the unhelpfully named "decks" directory) were manually screenshotted and cleaned up.
 
 The card images were taken from someone who extracted them from the cards.dll file you can find in earlier versions of Windows. See [their blog post](http://www.catonmat.net/blog/cards-dll/) for details.
@@ -9,6 +14,6 @@ The next issue was that the image corners were white instead of transparent. A G
     mv cards cards-nonprocessed
     mkdir cards
     cd cards
-    ls ../cards-nonprocessed/*.png | xargs -t -n 1 go run ../CardTransparencyFixer.go
+    ls ../cards-nonprocessed/*.png | xargs -t -n 1 go run ../util/CardTransparencyFixer.go
 
 Some cards had red borders instead of black ones. This was fixed by manually editing each offending card.
