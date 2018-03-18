@@ -40,6 +40,8 @@
 const CARD_W = 71;
 const CARD_H = 93;
 
+// Image elements.
+var Images = {}
 // Canvas and context.
 var Canvas, Context;
 
@@ -88,7 +90,14 @@ var bGameWon = false;
 var bRedrawRequired = true;
 
 // Initial load.
-window.onload = function() {
+window.addEventListener("load", function() {
+    // Get the required images.
+    var imageElementCollection = document.getElementById("images").children
+    for (var i = 0; i < imageElementCollection.length; i++) {
+        var imageElement = imageElementCollection[i]
+        Images[imageElement.id] = imageElement
+    }
+
     // Get the canvas and 2D context global objects.
     console.log("main.js: loading");
     Canvas  = document.getElementById(sCanvasID);
@@ -122,7 +131,7 @@ window.onload = function() {
     // Start the game loop.
     console.log("main.js: starting event loop");
     window.requestAnimationFrame(GameLoop);
-}
+})
 
 // Event loop.
 function GameLoop() {
