@@ -88,10 +88,13 @@ var bGameWon = false;
 // Whether to redraw the game on the next frame. This needs to be manually set to true whenever we
 // affect the game state, which is a bit annoying for debugging. Maybe look into adding a button.
 var bRedrawRequired = true;
+var bAllImagesLoaded = false;
 
 // Initial load.
-window.addEventListener("load", function() {
-    // Get the required images.
+// Using DOMContentLoaded means we can run this before all the images load. Doesn't work in IE8.
+document.addEventListener("DOMContentLoaded", function _GameEntryPoint() {
+    // Find all our image elements.
+    // NOTE: these images will usually not be 100% loaded when the function runs.
     var imageElementCollection = document.getElementById("images").children
     for (var i = 0; i < imageElementCollection.length; i++) {
         var imageElement = imageElementCollection[i]
@@ -138,8 +141,21 @@ function GameLoop() {
     // Optimization: this is a mostly static game, so we don't really need to redraw the canvas on
     // every frame. bRedrawRequired should be set to true by the various event handlers we use.
     if (bRedrawRequired) {
-        // Reset bRedrawRequired and start a redraw.
-        bRedrawRequired = false;
+        // Of course, we'll have to redraw every frame for a while, until all the images are loaded.
+        if (bAllImagesLoaded) {
+            // Reset bRedrawRequired and start a redraw.
+            bRedrawRequired = false;
+        } else {
+            bAllImagesLoaded = true
+            for (var imageID in Images) {
+                // Checking for .complete should work on all major browsers, hopefully.
+                // I can't actually find any data on how well-supported it is.
+                if (!Images[imageID].complete) {
+                    bAllImagesLoaded = false
+                    break
+                }
+            }
+        }
         // We'll run GameRedraw if the game is still being played, or GameWinRedraw if the game has
         // been won and we need to draw the win animation. Note that GameRedraw should run at least
         // once per session.
