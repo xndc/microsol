@@ -1,5 +1,4 @@
-/* This is the entry point of the game, sort of. The real one is loader.js. In any case, this file
-   assumes it's loaded after all the others. */
+/* This is the entry point of the game. */
 
 /* First, some background on Solitaire (Patience, for those who want to follow along on Wikipedia).
    The board has four sections we care about:
@@ -105,6 +104,16 @@ document.addEventListener("DOMContentLoaded", function _GameEntryPoint() {
     console.log("main.js: loading");
     Canvas  = document.getElementById(sCanvasID);
     Context = Canvas.getContext("2d");
+
+    // Switch the canvas to nearest-neighbour filtering.
+    Canvas.style.imageRendering = "optimizespeed" // Firefox
+    Canvas.style.imageRendering = "pixelated"     // Chrome (and Safari, I think?)
+
+    // Switch the context's image filtering mode to nearest-neighbour.
+    // NOTE: IE11 supports nearest-neighbour for images, but not the canvas itself. This means it doesn't get
+    //       properly upscaled when you zoom the page in. Text appears to render okay, though.
+    if (Context.imageSmoothingEnabled   !== undefined) Context.imageSmoothingEnabled   = false // Chrome/Firefox
+    if (Context.msImageSmoothingEnabled !== undefined) Context.msImageSmoothingEnabled = false // IE11
 
     // Attach the requisite event handlers.
     Canvas.addEventListener("mousedown",  OnMouseDown);
