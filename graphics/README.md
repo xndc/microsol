@@ -1,7 +1,7 @@
 **WARNING**:  
 All images are presumably copyrighted by Microsoft.
 
---
+----
 
 The cardback images (located in the unhelpfully named "decks" directory) were manually screenshotted and cleaned up.
 
