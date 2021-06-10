@@ -156,7 +156,14 @@ document.addEventListener("DOMContentLoaded", function _GameEntryPoint() {
 })
 
 // Event loop.
-function GameLoop() {
+var last_t = 0;
+function GameLoop(t) {
+    // Compute delta-time
+    var dt = 1000/60;
+    if (last_t != 0) {
+        dt = t - last_t;
+    }
+    last_t = t;
     // Optimization: this is a mostly static game, so we don't really need to redraw the canvas on
     // every frame. bRedrawRequired should be set to true by the various event handlers we use.
     if (bRedrawRequired) {
@@ -179,7 +186,7 @@ function GameLoop() {
         // been won and we need to draw the win animation. Note that GameRedraw should run at least
         // once per session.
         if (bGameWon) {
-            GameWinRedraw();
+            GameWinRedraw(dt);
         } else {
             GameRedraw();
         }
@@ -343,8 +350,8 @@ function NextCardback() {
 // I actually have no idea how to implement this.
 // See view-source:http://mrdoob.com/lab/javascript/effects/solitaire/ for pointers maybe, though
 // it's not entirely accurate.
-var iWinFrameskip         = 0;    // Frames to skip beween each position increment.
-var iWinFrameskipCounter  = 0;    // Frameskip counter.
+var fWinTargetFramerate   = 60;   // Frames per second to target with the animation.
+var fWinMsecSinceLastStep = 0;    // Counter used to skip frames.
 var iWinFoundation        = 3;    // Foundation of the card currently being animated.
 var iWinCardIndex         = 13;   // Index of the card within the foundation. Starts at the top.
 var iWinPosX              = 0;    // X position to draw the card at.
@@ -356,16 +363,16 @@ var iWinDeltaY            = 0;    // Current per-animation-frame Y delta.
 // sol.exe probably uses a frame counter, but I should get the stopwatch out and confirm sometime.
 var iWinAnimFramesPerCard = 250;  // Number of animation frames to draw for each card.
 var iWinAnimFrameCounter  = 0;    // Frame counter for the current card's animation.
-function GameWinRedraw() {
+function GameWinRedraw(dt) {
     // Set the redraw required flag. We'll set it to false later in this function if the entire win
     // animation is done.
     bRedrawRequired = true;
-    
+
     // Frame skipping:
-    if (iWinFrameskipCounter === 0) {
-        iWinFrameskipCounter = iWinFrameskip;
+    fWinMsecSinceLastStep += dt;
+    if (fWinMsecSinceLastStep + dt >= 1000 / fWinTargetFramerate) {
+        fWinMsecSinceLastStep = 0;
     } else {
-        iWinFrameskipCounter--;
         return;
     }
     
