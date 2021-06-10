@@ -401,7 +401,10 @@ function GameWinRedraw() {
         } else {
             iWinDeltaX = -iWinInitialDeltaX;
         }
-        iWinDeltaY = iWinInitialDeltaY;
+        if (Math.random() >= 0.75) {
+            iWinDeltaX *= 1.5;
+        }
+        iWinDeltaY = iWinInitialDeltaY * (0.5 + 0.5 * Math.random());
     } else {
         iWinAnimFrameCounter--;
     }
@@ -419,7 +422,9 @@ function GameWinRedraw() {
     // Update the motion deltas.
     if (iWinPosY >= Canvas.height - CARD_H) {
         iWinPosY = Canvas.height - CARD_H;
-        iWinDeltaY = -iWinDeltaY * 0.85;
+        if (iWinDeltaY > 2) {
+            iWinDeltaY = -iWinDeltaY * 0.85;
+        }
     }
     iWinDeltaY += 0.98;
     
