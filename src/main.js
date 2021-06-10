@@ -135,6 +135,16 @@ document.addEventListener("DOMContentLoaded", function _GameEntryPoint() {
         aTableauFaceDown = savedState.aTableauFaceDown;
         aTableauFaceUp   = savedState.aTableauFaceUp;
         iCardbackNumber  = savedState.iCardbackNumber || iCardbackNumber;
+        // If the last game was won, we don't want to play the animation
+        bGameWon = true;
+        for (var i = 0; bGameWon && (i < 4); i++) {
+            if (aFoundations[i].length !== 13) {
+                bGameWon = false;
+            }
+        }
+        if (bGameWon) {
+            Deal();
+        }
     } else {
         // Deal the cards. Function defined at bottom of this file.
         Deal();
