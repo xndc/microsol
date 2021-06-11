@@ -333,8 +333,11 @@ function Deal() {
         aTableauFaceUp[i].push(aStock.pop());
     }
     // Set the redraw and win flags.
-    bRedrawRequired = true;
-    bGameWon        = false;
+    bRedrawRequired  = true;
+    bGameWon         = false;
+    iWinFrameCounter = 0
+    iWinFoundation   = 3;
+    iWinCardIndex    = 13;
 }
 
 // Switch to the next cardback. Called from an <a> tag in index.html.
